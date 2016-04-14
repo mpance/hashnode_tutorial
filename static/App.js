@@ -1,165 +1,181 @@
-var BugList = React.createClass({
-	displayName: "BugList",
-
-	getInitialState: function () {
-		return { bugs: bugData };
-	},
-	render: function () {
-		return React.createElement(
-			"div",
-			null,
-			React.createElement(
-				"h1",
-				null,
-				"Bug Tracker"
-			),
-			React.createElement(BugFilter, null),
-			React.createElement("hr", null),
-			React.createElement(BugTable, { bugs: this.state.bugs }),
-			React.createElement("hr", null),
-			React.createElement(BugAdd, { addBug: this.addBug }),
-			React.createElement("hr", null)
-		);
-	},
-
-	addBug: function (bug) {
-		var bugsModified = this.state.bugs.slice();
-		bug.id = this.state.bugs.length + 1;
-		bugsModified.push(bug);
-		this.setState({ bugs: bugsModified });
-	}
-});
-
 var BugFilter = React.createClass({
-	displayName: "BugFilter",
+  displayName: "BugFilter",
 
-	render: function () {
-		return React.createElement(
-			"div",
-			null,
-			"Meant for a filter"
-		);
-	}
-});
-
-var BugTable = React.createClass({
-	displayName: "BugTable",
-
-	render: function () {
-		var bugRows = this.props.bugs.map(function (bug) {
-			return React.createElement(BugRow, { key: bug.id, bug: bug });
-		});
-		return React.createElement(
-			"table",
-			null,
-			React.createElement(
-				"thead",
-				null,
-				React.createElement(
-					"tr",
-					null,
-					React.createElement(
-						"th",
-						null,
-						"id"
-					),
-					React.createElement(
-						"th",
-						null,
-						"status"
-					),
-					React.createElement(
-						"th",
-						null,
-						"priority"
-					),
-					React.createElement(
-						"th",
-						null,
-						"owner"
-					),
-					React.createElement(
-						"th",
-						null,
-						"title"
-					)
-				)
-			),
-			React.createElement(
-				"tbody",
-				null,
-				bugRows
-			)
-		);
-	}
-});
-
-var BugAdd = React.createClass({
-	displayName: "BugAdd",
-
-	render: function () {
-		return React.createElement(
-			"div",
-			null,
-			React.createElement(
-				"form",
-				{ name: "bugAdd" },
-				React.createElement("input", { type: "text", name: "owner", placeholder: "owner" }),
-				React.createElement("input", { type: "text", name: "title", placeholder: "title" }),
-				React.createElement(
-					"button",
-					{ onClick: this.handleSubmit },
-					"Add"
-				)
-			)
-		);
-	},
-
-	handleSubmit: function (e) {
-		e.preventDefault();
-		var form = document.forms.bugAdd;
-		this.props.addBug({ owner: form.owner.value, title: form.title.value, status: 'New', priority: 'P1' });
-		//clear form
-		form.owner.value = "";form.title.value = "";
-	}
+  render: function () {
+    console.log("Rendering BugFilter");
+    return React.createElement(
+      "div",
+      null,
+      "A way to filter the list of bugs would come here."
+    );
+  }
 });
 
 var BugRow = React.createClass({
-	displayName: "BugRow",
+  displayName: "BugRow",
 
-	render: function () {
-		return React.createElement(
-			"tr",
-			null,
-			React.createElement(
-				"td",
-				null,
-				this.props.bug.id
-			),
-			React.createElement(
-				"td",
-				null,
-				this.props.bug.status
-			),
-			React.createElement(
-				"td",
-				null,
-				this.props.bug.priority
-			),
-			React.createElement(
-				"td",
-				null,
-				this.props.bug.owner
-			),
-			React.createElement(
-				"td",
-				null,
-				this.props.bug.title
-			)
-		);
-	}
+  render: function () {
+    console.log("Rendering BugRow:", this.props.bug);
+    return React.createElement(
+      "tr",
+      null,
+      React.createElement(
+        "td",
+        null,
+        this.props.bug.id
+      ),
+      React.createElement(
+        "td",
+        null,
+        this.props.bug.status
+      ),
+      React.createElement(
+        "td",
+        null,
+        this.props.bug.priority
+      ),
+      React.createElement(
+        "td",
+        null,
+        this.props.bug.owner
+      ),
+      React.createElement(
+        "td",
+        null,
+        this.props.bug.title
+      )
+    );
+  }
 });
 
-var bugData = [{ id: 1, priority: "P1", status: "Open", owner: "Ravan", title: "App crashes on open" }, { id: 2, priority: "P2", status: "New", owner: "Eddie", title: "Misaligned border on panel" }];
+// var bugData = [
+//   {id: 1, priority: 'P1', status:'Open', owner:'Ravan', title:'App crashes on open'},
+//   {id: 2, priority: 'P2', status:'New', owner:'Eddie', title:'Misaligned border on panel'}
+// ];
+
+var BugTable = React.createClass({
+  displayName: "BugTable",
+
+  render: function () {
+    console.log("Rendering bug table, num items:", this.props.bugs.length);
+    var bugRows = this.props.bugs.map(function (bug) {
+      return React.createElement(BugRow, { key: bug.id, bug: bug });
+    });
+    return React.createElement(
+      "table",
+      null,
+      React.createElement(
+        "thead",
+        null,
+        React.createElement(
+          "tr",
+          null,
+          React.createElement(
+            "th",
+            null,
+            "Id"
+          ),
+          React.createElement(
+            "th",
+            null,
+            "Status"
+          ),
+          React.createElement(
+            "th",
+            null,
+            "Priority"
+          ),
+          React.createElement(
+            "th",
+            null,
+            "Owner"
+          ),
+          React.createElement(
+            "th",
+            null,
+            "Title"
+          )
+        )
+      ),
+      React.createElement(
+        "tbody",
+        null,
+        bugRows
+      )
+    );
+  }
+});
+
+var BugAdd = React.createClass({
+  displayName: "BugAdd",
+
+  render: function () {
+    console.log("Rendering BugAdd");
+    return React.createElement(
+      "div",
+      null,
+      React.createElement(
+        "form",
+        { name: "bugAdd" },
+        React.createElement("input", { type: "text", name: "owner", placeholder: "Owner" }),
+        React.createElement("input", { type: "text", name: "title", placeholder: "Title" }),
+        React.createElement(
+          "button",
+          { onClick: this.handleSubmit },
+          "Add Bug"
+        )
+      )
+    );
+  },
+
+  handleSubmit: function (e) {
+    e.preventDefault();
+    var form = document.forms.bugAdd;
+    this.props.addBug({ owner: form.owner.value, title: form.title.value, status: 'New', priority: 'P1' });
+    // clear the form for the next input
+    form.owner.value = "";form.title.value = "";
+  }
+});
+
+var BugList = React.createClass({
+  displayName: "BugList",
+
+  getInitialState: function () {
+    return { bugs: [] };
+  },
+  render: function () {
+    console.log("Rendering bug list, num items:", this.state.bugs.length);
+    return React.createElement(
+      "div",
+      null,
+      React.createElement(
+        "h1",
+        null,
+        "Bug Tracker"
+      ),
+      React.createElement(BugFilter, null),
+      React.createElement("hr", null),
+      React.createElement(BugTable, { bugs: this.state.bugs }),
+      React.createElement("hr", null),
+      React.createElement(BugAdd, { addBug: this.addBug })
+    );
+  },
+
+  componentDidMount: function () {
+    $.ajax('/api/bugs').done(function (data) {
+      this.setState({ bugs: data });
+    }.bind(this));
+    // In production, we'd also handle errors.
+  },
+
+  addBug: function (bug) {
+    console.log("Adding bug:", bug);
+    // We're advised not to modify the state, it's immutable. So, make a copy.
+    var bugsModified = this.state.bugs.slice();
+    bug.id = this.state.bugs.length + 1;
+    bugsModified.push(bug);
+    this.setState({ bugs: bugsModified });
+  }
+});
 
 ReactDOM.render(React.createElement(BugList, null), document.getElementById('main'));
